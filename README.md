@@ -3,7 +3,7 @@ todo list \
 python3.10, Django4.1.7, Postgres:14.6-alpine
 
 Установка зависимостей: \
-poetry install / pip install requirements.txt 
+poetry install
 
 Переменные окружения в .env
 

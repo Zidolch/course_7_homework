@@ -2,6 +2,13 @@ version: '3.8'
 
 services:
 
+  front:
+    image: sermalenk/skypro-front:lesson-34
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
   db:
     image: postgres:14.6-alpine
     environment:
@@ -17,6 +24,21 @@ services:
       retries: 15
     ports:
       - "5432:5432"
+
+  api:
+    build:
+      target: dev_image
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./todolist:/opt/todolist
+
 
 volumes:
   course_7_pg_data:

@@ -1,0 +1,5 @@
+name: Build and deploy
+
+on:
+  push:
+    branch:

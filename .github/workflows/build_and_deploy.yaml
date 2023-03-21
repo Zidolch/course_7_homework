@@ -59,7 +59,7 @@ jobs:
             cd todolist
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose down
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
-      -name: cleanup
+      - name: cleanup
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}

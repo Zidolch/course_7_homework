@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v2
       - name: render configs
         run: |
-          mkdir  deploy
+          if sudo test -d deploy; then mkdir  deploy
           cat docker-compose-ci.yml | envsubst > deploy/docker-compose.yml
           cat .env | envsubst > deploy/.env
       - name: copy files to server

@@ -52,16 +52,16 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          key: ${{ secrets.PASSWORD }}
+          password: ${{ secrets.PASSWORD }}
           script: |
-            echo "DEBUG=False" > todolist/.env
-            echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> todolist/.env
-            echo "POSTGRES_NAME=course_7" >> todolist/.env
-            echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> todolist/.env
-            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> todolist/.env
-            echo "POSTGRES_HOST=${{ secrets.HOST }}" >> todolist/.env
-            echo "POSTGRES_PORT=5432" >> todolist/.env
-            echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> todolist/.env
+            export DEBUG=False
+            export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            export POSTGRES_NAME=course_7
+            export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            export POSTGRES_HOST=${{ secrets.HOST }}
+            export POSTGRES_PORT=5432
+            export SECRET_KEY=${{ secrets.SECRET_KEY }}
       - name: deploy app
         uses: appleboy/ssh-action@master
         with:

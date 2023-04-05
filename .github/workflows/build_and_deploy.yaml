@@ -51,7 +51,6 @@ jobs:
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> todolist/.env
             echo VK_OAUTH_ID=${{ secrets.VK_OAUTH_ID }} >> todolist/.env
             echo VK_OAUTH_SECRET_KEY=${{ secrets.VK_OAUTH_SECRET_KEY }} >> todolist/.env
-
       - name: render configs
         run: |
           mkdir -p home/deploy

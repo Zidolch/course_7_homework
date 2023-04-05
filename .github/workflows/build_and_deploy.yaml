@@ -53,7 +53,11 @@ jobs:
             echo VK_OAUTH_SECRET_KEY=${{ secrets.VK_OAUTH_SECRET_KEY }} >> todolist/.env
       - name: render configs
         run: |
+          set -a
+          source todolist/.env
+          set +a
           mkdir -p home/deploy
+          cat deploy/docker-compose-ci.yaml | envsubst < deploy/docker-compose.yaml
       - name: copy files to server
         uses: appleboy/scp-action@master
         with:
@@ -72,10 +76,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd todolist
-            set -a
-            source .env
-            set +a
-            envsubst < docker-compose.yaml
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose down
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
       - name: cleanup

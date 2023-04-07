@@ -73,9 +73,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd todolist
-            set -a
-            source .env
-            set +a
+            export $(xargs <.env)
             envsubst < docker-compose.yaml
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose down
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d

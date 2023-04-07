@@ -26,7 +26,7 @@ jobs:
           target: prod_image
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/homework_34:${{ github.run_id }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/homework_34:latest
 
   deploy:
     runs-on: ubuntu-latest

@@ -25,7 +25,7 @@ services:
       retries: 15
 
   api:
-    image: zidolch/homework_34:latest
+    image: zidolch/homework_34
     env_file: .env
     restart: always
     environment:

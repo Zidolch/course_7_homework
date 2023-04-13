@@ -70,6 +70,8 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = ProfileSerializer(read_only=True)
+
     def validate_category(self, value):
         if value.user != self.context["request"].user:
             raise serializers.ValidationError("not owner of comment")

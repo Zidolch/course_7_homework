@@ -6,7 +6,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDe
 from rest_framework import permissions, filters
 from rest_framework.pagination import LimitOffsetPagination
 
-from goals.filters import GoalDateFilter
+from goals.filters import GoalDateFilter, CommentFilter
 from goals.models import GoalCategory, Goal, Comment
 from goals.serializers import GoalCategoryCreateSerializer, GoalCategorySerializer, GoalCreateSerializer, \
     GoalSerializer, CommentCreateSerializer, CommentSerializer
@@ -113,11 +113,11 @@ class CommentListView(ListAPIView):
     serializer_class = CommentSerializer
     filter_backends = [
         filters.OrderingFilter,
-        filters.SearchFilter,
+        DjangoFilterBackend,
     ]
-    ordering_fields = ['created']
+    ordering_fields = ["created"]
     ordering = ['-created']
-    search_fields = ['goal']
+    filterset_class = CommentFilter
 
     def get_queryset(self):
         return Comment.objects.filter(user_id=self.request.user.id)

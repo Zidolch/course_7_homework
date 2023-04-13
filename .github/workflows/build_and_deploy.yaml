@@ -55,6 +55,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd todolist
+            export $(xargs <.env)
+            envsubst < docker-compose.yaml
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose down
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
       - name: cleanup

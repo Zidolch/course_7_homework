@@ -2,6 +2,7 @@
 **
 
 # expect
+!goals/**
 !core/**
 !todolist/**
 !entrypoint.sh

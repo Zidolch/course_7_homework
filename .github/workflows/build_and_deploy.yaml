@@ -37,7 +37,6 @@ jobs:
       - name: render configs
         run: |
           mkdir -p home/deploy
-          mv deploy/docker-compose-ci.yaml deploy/docker-compose.yaml
       - name: copy files to server
         uses: appleboy/scp-action@master
         with:
@@ -56,8 +55,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd todolist
-            export $(xargs <.env)
-            envsubst < docker-compose.yaml
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose down
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
       - name: cleanup

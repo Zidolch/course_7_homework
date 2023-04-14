@@ -45,6 +45,7 @@ class GoalSerializer(serializers.ModelSerializer):
     def validate_category(self, value):
         if value.user != self.context["request"].user:
             raise serializers.ValidationError("not owner of category")
+        return value
 
     class Meta:
         model = Goal
@@ -58,7 +59,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         queryset=Goal.objects.exclude(status=Goal.Status.archived)
     )
 
-    def validate_category(self, value):
+    def validate_goal(self, value):
         if value.user != self.context["request"].user:
             raise serializers.ValidationError("not owner of goal")
         return value
@@ -72,9 +73,9 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
 
-    def validate_category(self, value):
+    def validate_goal(self, value):
         if value.user != self.context["request"].user:
-            raise serializers.ValidationError("not owner of comment")
+            raise serializers.ValidationError("not owner of goal")
         return value
 
     class Meta:

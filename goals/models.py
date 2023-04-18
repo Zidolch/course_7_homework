@@ -13,7 +13,47 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class Board(BaseModel):
+    class Meta:
+        verbose_name = "Доска"
+        verbose_name_plural = "Доски"
+
+    title = models.CharField(verbose_name="Название", max_length=255)
+    is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
+
+
+class BoardParticipant(BaseModel):
+    class Meta:
+        unique_together = ("board", "user")
+        verbose_name = "Участник"
+        verbose_name_plural = "Участники"
+
+    class Role(models.IntegerChoices):
+        owner = 1, "Владелец"
+        writer = 2, "Редактор"
+        reader = 3, "Читатель"
+
+    board = models.ForeignKey(
+        Board,
+        verbose_name="Доска",
+        on_delete=models.PROTECT,
+        related_name="participants",
+    )
+    user = models.ForeignKey(
+        User,
+        verbose_name="Пользователь",
+        on_delete=models.PROTECT,
+        related_name="participants",
+    )
+    role = models.PositiveSmallIntegerField(
+        verbose_name="Роль", choices=Role.choices, default=Role.owner
+    )
+
+
 class GoalCategory(BaseModel):
+    board = models.ForeignKey(
+        Board, verbose_name="Доска", on_delete=models.PROTECT, related_name="categories"
+    )
     title = models.CharField(verbose_name="Название", max_length=255, validators=[MinLengthValidator(1)])
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
     is_deleted = models.BooleanField(verbose_name="Удалена", default=False)
@@ -43,18 +83,13 @@ class Goal(BaseModel):
     title = models.CharField(verbose_name="Название", max_length=255, validators=[MinLengthValidator(1)])
     description = models.TextField(verbose_name="Описание", max_length=255, null=True, blank=True)
     category = models.ForeignKey(
-        verbose_name="Категория",
-        to=GoalCategory,
-        on_delete=models.CASCADE,
-        related_name='goals'
+        verbose_name="Категория", to=GoalCategory, on_delete=models.CASCADE, related_name='goals'
     )
     due_date = models.DateTimeField(verbose_name="Дата выполнения", null=True, blank=True)
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
     status = models.PositiveSmallIntegerField(verbose_name="Статус", choices=Status.choices, default=Status.to_do)
     priority = models.PositiveSmallIntegerField(
-        verbose_name="Приоритет",
-        choices=Priority.choices,
-        default=Priority.medium
+        verbose_name="Приоритет", choices=Priority.choices, default=Priority.medium
     )
 
     class Meta:
@@ -69,10 +104,7 @@ class Comment(BaseModel):
     text = models.CharField(verbose_name="Текст", max_length=255, validators=[MinLengthValidator(1)])
     user = models.ForeignKey(User, verbose_name="Автор", on_delete=models.PROTECT)
     goal = models.ForeignKey(
-        verbose_name="Цель",
-        to=Goal,
-        on_delete=models.CASCADE,
-        related_name='comments'
+        verbose_name="Цель", to=Goal, on_delete=models.CASCADE, related_name='comments'
     )
 
     class Meta:

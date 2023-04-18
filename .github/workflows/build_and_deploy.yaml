@@ -3,7 +3,7 @@ name: Build and deploy
 on:
   push:
     branch:
-      - "dev_36"
+      - "dev_37"
 
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
           target: prod_image
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/homework_36:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/homework_37:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,6 +58,7 @@ jobs:
             export $(xargs <.env)
             envsubst < docker-compose.yaml
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose down
+            echo ${{ secrets.PASSWORD }} | sudo -S docker-compose pull
             echo ${{ secrets.PASSWORD }} | sudo -S docker-compose up -d
       - name: cleanup
         uses: appleboy/ssh-action@master

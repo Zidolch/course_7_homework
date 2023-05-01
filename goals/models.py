@@ -1,7 +1,6 @@
+from typing import Tuple
 from django.core.validators import MinLengthValidator
 from django.db import models
-from django.utils import timezone
-
 from core.models import User
 
 
@@ -62,23 +61,23 @@ class GoalCategory(BaseModel):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
-    def __str__(self):
+    def __str__(self) -> models.CharField:
         return self.title
 
 
 class Goal(BaseModel):
 
     class Status(models.IntegerChoices):
-        to_do = 1, 'К выполнению'
-        in_progress = 2, 'В процессе'
-        done = 3, 'Выполнено'
-        archived = 4, 'Архивировано'
+        to_do: Tuple[int, str] = 1, 'К выполнению'
+        in_progress: Tuple[int, str] = 2, 'В процессе'
+        done: Tuple[int, str] = 3, 'Выполнено'
+        archived: Tuple[int, str] = 4, 'Архивировано'
 
     class Priority(models.IntegerChoices):
-        low = 1, 'Низкий'
-        medium = 2, 'Средний'
-        high = 3, 'Высокий'
-        critical = 4, 'Критический'
+        low: Tuple[int, str] = 1, 'Низкий'
+        medium: Tuple[int, str] = 2, 'Средний'
+        high: Tuple[int, str] = 3, 'Высокий'
+        critical: Tuple[int, str] = 4, 'Критический'
 
     title = models.CharField(verbose_name="Название", max_length=255, validators=[MinLengthValidator(1)])
     description = models.TextField(verbose_name="Описание", max_length=255, null=True, blank=True)
@@ -96,7 +95,7 @@ class Goal(BaseModel):
         verbose_name = "Цель"
         verbose_name_plural = "Цели"
 
-    def __str__(self):
+    def __str__(self) -> models.CharField:
         return self.title
 
 

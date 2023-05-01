@@ -35,7 +35,7 @@ class LoginSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password')
         read_only_fields = ('id', 'first_name', 'last_name', 'email')
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> User:
         user = authenticate(
             username=validated_data['username'],
             password=validated_data['password']
@@ -61,7 +61,7 @@ class UpdatePasswordSerializer(serializers.Serializer):
             raise ValidationError('Неверный пароль')
         return old_password
 
-    def update(self, instance, validated_data: dict) -> User:
+    def update(self, instance: User, validated_data: dict) -> User:
         instance.set_password(validated_data['new_password'])
         instance.save(update_fields=('password', ))
         return instance

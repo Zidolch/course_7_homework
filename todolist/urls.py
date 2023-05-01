@@ -7,7 +7,8 @@ urlpatterns = [
     path('core/', include(('core.urls', 'core'))),
     path('admin/', admin.site.urls),
     path("oauth/", include("social_django.urls", namespace="social")),
-    path("goals/", include("goals.urls")),
+    path("goals/", include(("goals.urls", 'goals'))),
+    path("bot/", include(("bot.urls", 'bot'))),
 ]
 
 if settings.DEBUG:

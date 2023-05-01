@@ -15,7 +15,7 @@ class BoardCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated", 'is_deleted')
         fields = "__all__"
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> Board:
         user = validated_data.pop("user")
         board = Board.objects.create(**validated_data)
         BoardParticipant.objects.create(
@@ -37,7 +37,7 @@ class BoardParticipantSerializer(serializers.ModelSerializer):
 class BoardSerializer(serializers.ModelSerializer):
     participants = BoardParticipantSerializer(many=True)
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Board, validated_data: dict) -> Board:
         with transaction.atomic():
             BoardParticipant.objects.filter(board=instance).exclude(user=self.context['request'].user).delete()
             BoardParticipant.objects.bulk_create([
@@ -85,7 +85,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
     )
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
-    def validate_category(self, value):
+    def validate_category(self, value: GoalCategory) -> GoalCategory:
         if not BoardParticipant.objects.filter(
             board_id=value.board.id,
             role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
@@ -103,7 +103,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 class GoalSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
 
-    def validate_category(self, value):
+    def validate_category(self, value: GoalCategory) -> GoalCategory:
         if not BoardParticipant.objects.filter(
             board_id=value.board.id,
             role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
@@ -124,7 +124,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         queryset=Goal.objects.exclude(status=Goal.Status.archived)
     )
 
-    def validate_goal(self, value):
+    def validate_goal(self, value: Goal) -> Goal:
         if not BoardParticipant.objects.filter(
             board_id=value.category.board.id,
             role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],
@@ -142,7 +142,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
 
-    def validate_goal(self, value):
+    def validate_goal(self, value: Goal) -> Goal:
         if not BoardParticipant.objects.filter(
             board_id=value.category.board.id,
             role__in=[BoardParticipant.Role.owner, BoardParticipant.Role.writer],

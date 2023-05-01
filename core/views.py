@@ -1,8 +1,7 @@
 from typing import Any
 
 from django.contrib.auth import login, logout
-from django.shortcuts import render
-from rest_framework import generics, permissions
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -30,10 +29,10 @@ class ProfileView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProfileSerializer
     permission_classes: tuple[BasePermission, ...] = (IsAuthenticated,)
 
-    def get_object(self):
+    def get_object(self) -> User:
         return self.request.user
 
-    def perform_destroy(self, instance):
+    def perform_destroy(self, instance: User) -> None:
         logout(self.request)
 
 
@@ -41,5 +40,5 @@ class UpdatePasswordView(generics.UpdateAPIView):
     permission_classes: tuple[BasePermission, ...] = (IsAuthenticated,)
     serializer_class = UpdatePasswordSerializer
 
-    def get_object(self):
+    def get_object(self) -> User:
         return self.request.user

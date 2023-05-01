@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   front:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     restart: always
     ports:
       - "80:80"
@@ -43,6 +43,20 @@ services:
       - ./core:/opt/core
       - ./goals:/opt/goals
 
+  bot:
+    build: .
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_started
+    volumes:
+      - ./bot:/opt/bot
+    command: python manage.py runbot
 
 volumes:
   course_7_pg_data:

@@ -4,6 +4,7 @@
 # expect
 !goals/**
 !core/**
+!bot/**
 !todolist/**
 !entrypoint.sh
 !manage.py

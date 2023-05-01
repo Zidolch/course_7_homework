@@ -3,7 +3,7 @@ name: Build and deploy
 on:
   push:
     branch:
-      - "dev_37"
+      - "dev_38"
 
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
           target: prod_image
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/homework_37:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/homework_38:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -34,6 +34,24 @@ jobs:
     steps:
       - name: clone code
         uses: actions/checkout@v2
+      - name: executing remote ssh commands to set env
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            echo DEBUG=False > todolist/.env
+            echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> todolist/.env
+            echo POSTGRES_NAME=course_7 >> todolist/.env
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> todolist/.env
+            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> todolist/.env
+            echo POSTGRES_HOST=${{ secrets.HOST }} >> todolist/.env
+            echo POSTGRES_PORT=5432 >> todolist/.env
+            echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> todolist/.env
+            echo VK_OAUTH_ID=${{ secrets.VK_OAUTH_ID }} >> todolist/.env
+            echo VK_OAUTH_SECRET_KEY=${{ secrets.VK_OAUTH_SECRET_KEY }} >> todolist/.env
+            echo BOT_TOKEN=${{ secrets.BOT_TOKEN }} >> todolist/.env
       - name: render configs
         run: |
           mkdir -p home/deploy

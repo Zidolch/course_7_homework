@@ -6,6 +6,8 @@ from core.models import User
 from core.serializers import ProfileSerializer
 from goals.models import GoalCategory, Goal, Comment, Board, BoardParticipant
 
+# Boards
+
 
 class BoardCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -60,6 +62,8 @@ class BoardSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated", 'is_deleted')
         fields = "__all__"
 
+# Category
+
 
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -77,6 +81,8 @@ class GoalCategorySerializer(serializers.ModelSerializer):
         model = GoalCategory
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
+
+# Goal
 
 
 class GoalCreateSerializer(serializers.ModelSerializer):
@@ -116,6 +122,8 @@ class GoalSerializer(serializers.ModelSerializer):
         model = Goal
         fields = "__all__"
         read_only_fields = ("id", "created", "updated", "user")
+
+# Comment
 
 
 class CommentCreateSerializer(serializers.ModelSerializer):

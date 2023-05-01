@@ -11,7 +11,7 @@ class Chat:
         self.__state: BaseTgUserState | None = None
 
     @property
-    def state(self):
+    def state(self) -> BaseTgUserState | None:
         if self.__state:
             return self.__state
         else:

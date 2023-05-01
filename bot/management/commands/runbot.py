@@ -9,13 +9,13 @@ from todolist import settings
 
 class Command(BaseCommand):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.tg_client: TgClient = TgClient(token=settings.BOT_TOKEN)
         self.logger = logging.getLogger(__name__)
         self.logger.info('Bot started')
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
         offset: int = 0
         while True:
             # Получение обновлений в бесконечном цикле.

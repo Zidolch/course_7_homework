@@ -12,7 +12,7 @@ class TgUserSerializer(serializers.ModelSerializer):
         fields = ('telegram_chat_id', 'telegram_user_id', 'user', 'verification_code')
         read_only_fields = ('telegram_chat_id', 'telegram_user_id', 'user')
 
-    def validate_verification_code(self, value: str):
+    def validate_verification_code(self, value: str) -> str:
         try:
             self.instance = TgUser.objects.get(verification_code=value)
         except TgUser.DoesNotExist:

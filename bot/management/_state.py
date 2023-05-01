@@ -98,7 +98,7 @@ class VerifiedUserState(BaseTgUserState):
             text='\n'.join(goals) if goals else 'Целей пока нет.'
         )
 
-    def _handle_create_command(self, message: Message):
+    def _handle_create_command(self, message: Message) -> None:
         """Верификация выбранной категории."""
         categories_id: list[int] = [
             cat.id for cat in GoalCategory.objects.filter(user_id=self.tg_user.user.id, is_deleted=False)
@@ -113,7 +113,7 @@ class VerifiedUserState(BaseTgUserState):
                 text='''Такой категории нет. Чтобы создать цель введите /create.'''
             )
 
-    def create_goal(self):
+    def create_goal(self) -> None:
         """Создание цели и сброс флагов состояния."""
         goal = Goal.objects.create(user_id=self.tg_user.user.id, category_id=VerifiedUserState.category_for_create,
                                    title=self.message.text)
@@ -123,7 +123,7 @@ class VerifiedUserState(BaseTgUserState):
             text=f'''Создана цель {self.message.text} в категории {GoalCategory.objects.get(id=goal.category_id)}.'''
         )
 
-    def _handle_choose_cat_command(self):
+    def _handle_choose_cat_command(self) -> None:
         """Вывод списка доступных категорий юзеру."""
         categories: list[str] = [
             f'{cat.id}) {cat.title}'
@@ -138,7 +138,7 @@ class VerifiedUserState(BaseTgUserState):
                 else 'Необходимо создать категорию.'
             )
 
-    def _handle_cancel_create(self):
+    def _handle_cancel_create(self) -> None:
         """Сброс флага создания категории."""
         VerifiedUserState.is_create_command = False
         VerifiedUserState.category_for_create = None

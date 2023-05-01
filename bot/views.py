@@ -11,13 +11,13 @@ class BotVerificationView(UpdateAPIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = TgUserSerializer
 
-    def update(self, request, *args, **kwargs):
+    def update(self, request, *args, **kwargs) -> Response:
         serializer: TgUserSerializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
 
-    def perform_update(self, serializer):
+    def perform_update(self, serializer) -> None:
         tg_user = serializer.save()
         tg_client = TgClient(settings.BOT_TOKEN)
         tg_client.send_message(chat_id=tg_user.telegram_chat_id,

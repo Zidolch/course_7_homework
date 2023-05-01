@@ -32,8 +32,8 @@ class NewUserState(BaseTgUserState):
 
     def __init__(self, tg_user: TgUser, tg_client: TgClient):
         super().__init__(tg_user, tg_client)
-        self._text = f'''Добро пожаловать в бот ToDoCon!
-Для продолжения работы необходимо привязать Ваш аккаунт todocon.ga.
+        self._text = f'''Добро пожаловать в бот zidolch_goals!
+Для продолжения работы необходимо привязать Ваш аккаунт 84.201.173.84.
 Код для верификации: {self.get_verification_code()}.'''
 
 

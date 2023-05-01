@@ -9,6 +9,8 @@ services:
       - "80:80"
     depends_on:
       - api
+    networks:
+      - frontend_nw
 
   db:
     image: postgres:14.6
@@ -23,6 +25,9 @@ services:
       interval: 3s
       timeout: 3s
       retries: 15
+    networks:
+      - backend_nw
+      - bot_nw
 
   api:
     image: zidolch/homework_38:latest
@@ -33,6 +38,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - backend_nw
+      - frontend_nw
 
   bot:
     image: zidolch/homework_38:latest
@@ -40,13 +48,24 @@ services:
     env_file:
       - .env
     environment:
-      DB_HOST: db
+      POSTGRES_HOST: db
     depends_on:
       db:
         condition: service_healthy
       api:
         condition: service_started
     command: python manage.py runbot
+    networks:
+      - bot_nw
 
 volumes:
   course_7_pg_data:
+
+networks:
+  backend_nw:
+    driver: bridge
+  frontend_nw:
+    driver: bridge
+  bot_nw:
+    driver: bridge
+
